@@ -1,16 +1,12 @@
 
 package dev.mrkevr.quizapp.api.model;
 
-import java.util.Random;
 import java.util.Set;
-
-import javax.persistence.PrePersist;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import dev.mrkevr.quizapp.api.service.AppUtil;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,9 +32,4 @@ public class Quiz {
 	Difficulty difficulty;
 
 	Set<ObjectId> questionIds;
-
-	@PrePersist
-	private void prePersist() {
-		this.setQuizId(AppUtil.getRandomDocumentId());
-	}
 }

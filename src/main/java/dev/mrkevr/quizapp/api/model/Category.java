@@ -1,13 +1,8 @@
 package dev.mrkevr.quizapp.api.model;
 
-import java.util.Random;
-
-import javax.persistence.PrePersist;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import dev.mrkevr.quizapp.api.service.AppUtil;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,9 +22,4 @@ public class Category {
 	String categoryId;;
 
 	String name;
-	
-	@PrePersist
-	private void prePersist() {
-		this.setCategoryId(AppUtil.getRandomDocumentId());
-	}
 }

@@ -37,9 +37,4 @@ public class QuestionServiceImpl implements QuestionService {
 			throw new IllegalStateException(e.getMessage());
 		}
 	}
-
-	
-	
-	
-	
 }
