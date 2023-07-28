@@ -39,7 +39,7 @@ public class CategoryController {
 	@PostMapping
 	ResponseEntity<Category> save(@RequestBody Category category) {
 		String name = category.getName();
-		Category savedCategory = categoryServ.saveCategory(name);
+		Category savedCategory = categoryServ.save(name);
 		return ResponseEntity.ok(savedCategory);
 	}
 }

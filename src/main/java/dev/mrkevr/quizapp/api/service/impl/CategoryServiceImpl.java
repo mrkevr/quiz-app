@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional
-	public Category saveCategory(String name) {
+	public Category save(String name) {
 		Category category = new Category();
 		category.setName(name);
 		return categoryRepo.save(category);

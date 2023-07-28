@@ -10,7 +10,7 @@ public interface CategoryService {
 
 	Category getById(String id);
 
-	Category saveCategory(String name);
+	Category save(String name);
 
 	Category updateById(String id, String name);
 

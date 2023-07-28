@@ -3,7 +3,6 @@ package dev.mrkevr.quizapp.api.model;
 
 import java.util.Set;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -31,5 +30,5 @@ public class Quiz {
 
 	Difficulty difficulty;
 
-	Set<ObjectId> questionIds;
+	Set<String> questionIds;
 }

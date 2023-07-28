@@ -17,15 +17,15 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Document(collection = "questions")
 public class Question {
-	
+
 	@Id
 	String questionId;
 
-	String quizId;
+	String categoryId;
 
 	String question;
 
 	Option option;
 
-	String answer;
+	String rightAnswer;
 }
