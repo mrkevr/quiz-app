@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import dev.mrkevr.quizapp.api.dto.QuestionRequest;
+import dev.mrkevr.quizapp.api.dto.QuestionResponse;
 import dev.mrkevr.quizapp.api.exception.ResourceNotFoundException;
 import dev.mrkevr.quizapp.api.model.Question;
+import dev.mrkevr.quizapp.api.model.QuestionMapper;
 import dev.mrkevr.quizapp.api.repository.QuestionRepository;
 import dev.mrkevr.quizapp.api.service.QuestionService;
 import lombok.AccessLevel;
@@ -19,33 +22,37 @@ import lombok.experimental.FieldDefaults;
 public class QuestionServiceImpl implements QuestionService {
 
 	QuestionRepository questionRepo;
+	QuestionMapper questionMapper;
 
 	@Override
-	public Question getById(String questionId) {
-		return questionRepo.findById(questionId).orElseThrow(() -> new ResourceNotFoundException(questionId));
+	public QuestionResponse getById(String questionId) {
+		Question question = questionRepo.findById(questionId).orElseThrow(() -> new ResourceNotFoundException(questionId));
+		return  questionMapper.toQuestionResponse(question);
 	}
 
 	@Override
-	public List<Question> getAllById(List<String> questionIds) {
+	public List<QuestionResponse> getAllById(List<String> questionIds) {
 		Iterable<Question> iterable = questionRepo.findAllById(questionIds);
 		List<Question> questions = new ArrayList<>();
 		iterable.forEach(questions::add);
-		return questions;
+		return questionMapper.toQuestionResponse(questions);
 	}
 	
 	@Override
-	public List<Question> getAllByCategoryId(String categoryId) {
+	public List<QuestionResponse> getAllByCategoryId(String categoryId) {
 		List<Question> questions = questionRepo.findByCategoryId(categoryId);
-		return questions;
+		return questionMapper.toQuestionResponse(questions);
 	}
 
 	@Override
-	public Question add(Question question) {
+	public QuestionResponse add(QuestionRequest questionRequest) {
 		
 		// validation logic here
 		
+		
 		try {
-			return questionRepo.save(question);
+			Question savedQuestion = questionRepo.save(questionMapper.toQuestion(questionRequest));
+			return questionMapper.toQuestionResponse(savedQuestion);
 		} catch (Exception e) {
 			throw new IllegalStateException(e.getMessage());
 		}
@@ -59,7 +66,7 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public Question update(String questionId, Question question) {
+	public QuestionResponse update(String questionId, Question question) {
 		Question questionToUpdate = questionRepo.findById(questionId)
 				.orElseThrow(() -> new ResourceNotFoundException(questionId));
 

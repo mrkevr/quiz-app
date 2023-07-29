@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.mrkevr.quizapp.api.model.Question;
+import dev.mrkevr.quizapp.api.dto.QuestionRequest;
+import dev.mrkevr.quizapp.api.dto.QuestionResponse;
 import dev.mrkevr.quizapp.api.service.QuestionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,27 +26,27 @@ public class QuestionController {
 	QuestionService questionServ;
 
 	@GetMapping("/{id}")
-	ResponseEntity<Question> getById(@PathVariable String id) {
-		Question question = questionServ.getById(id);
+	ResponseEntity<QuestionResponse> getById(@PathVariable String id) {
+		QuestionResponse question = questionServ.getById(id);
 		return ResponseEntity.ok(question);
 	}
 
 	@GetMapping
-	ResponseEntity<List<Question>> getAllById(@RequestBody(required = true) List<String> questionIds) {
+	ResponseEntity<List<QuestionResponse>> getAllById(@RequestBody(required = true) List<String> questionIds) {
 //		List<String> ids = idWrapper.getIds();
-		List<Question> questions = questionServ.getAllById(questionIds);
+		List<QuestionResponse> questions = questionServ.getAllById(questionIds);
 		return ResponseEntity.ok(questions);
 	}
 
 	@GetMapping("/category/{categoryId}")
-	ResponseEntity<List<Question>> getAllByCategoryId(@PathVariable String categoryId) {
-		List<Question> questions = questionServ.getAllByCategoryId(categoryId);
+	ResponseEntity<List<QuestionResponse>> getAllByCategoryId(@PathVariable String categoryId) {
+		List<QuestionResponse> questions = questionServ.getAllByCategoryId(categoryId);
 		return ResponseEntity.ok(questions);
 	}
 
 	@PostMapping
-	ResponseEntity<Question> save(@RequestBody Question question) {
-		Question savedQuestion = questionServ.add(question);
+	ResponseEntity<QuestionResponse> save(@RequestBody QuestionRequest questionRequest) {
+		QuestionResponse savedQuestion = questionServ.add(questionRequest);
 		return ResponseEntity.ok(savedQuestion);
 	}
 }
