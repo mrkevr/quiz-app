@@ -26,7 +26,7 @@ public class QuizServiceImpl implements QuizService {
 
 	@Override
 	public Quiz getById(String quizId) {
-		return quizRepo.findById(quizId).orElseThrow(() -> new ResourceNotFoundException(quizId));
+		return quizRepo.findById(quizId).orElseThrow(() -> new ResourceNotFoundException(quizId, Quiz.class));
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class QuizServiceImpl implements QuizService {
 
 	@Override
 	public void deleteById(String quizId) {
-		Quiz quiz = quizRepo.findById(quizId).orElseThrow(() -> new ResourceNotFoundException(quizId));
+		Quiz quiz = quizRepo.findById(quizId).orElseThrow(() -> new ResourceNotFoundException(quizId, Quiz.class));
 		quizRepo.delete(quiz);
 	}
 

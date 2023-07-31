@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category getById(String id) {
-		return categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, Category.class));
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public Category updateById(String id, String name) {
-		Category category = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		Category category = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, Category.class));
 		category.setName(name);
 		return categoryRepo.save(category);
 	}
@@ -50,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public void deleteById(String id) {
-		Category category = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		Category category = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, Category.class));
 		categoryRepo.delete(category);
 	}
 }
