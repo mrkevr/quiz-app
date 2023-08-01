@@ -26,6 +26,7 @@ public class QuestionRequest {
 	String categoryId;
 
 	@NotBlank(message = "question must not be blank.")
+	@Length(min = 12, max = 120, message = "question must be 12-120 characters long.")
 	String question;
 
 	@Valid

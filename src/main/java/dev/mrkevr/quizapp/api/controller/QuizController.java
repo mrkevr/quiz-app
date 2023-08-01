@@ -5,13 +5,18 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.mrkevr.quizapp.api.dto.UserQuizAnswer;
+import dev.mrkevr.quizapp.api.model.Difficulty;
 import dev.mrkevr.quizapp.api.model.Quiz;
+import dev.mrkevr.quizapp.api.model.QuizResult;
 import dev.mrkevr.quizapp.api.service.QuizService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -57,11 +62,29 @@ public class QuizController {
 		Quiz savedQuiz = quizServ.save(quiz);
 		return ResponseEntity.ok(savedQuiz);
 	}
+	
+	@PostMapping("/generate")
+	public ResponseEntity<Quiz> generate(
+			@RequestParam(name = "author", defaultValue = "anonymous", required = false) String author,
+			@RequestParam(name = "categoryId", required = true) String categoryId,
+			@RequestParam(name = "size", defaultValue = "10", required = false) int size,
+			@RequestParam(name = "difficulty", required = true) Difficulty difficulty
+			) 
+	{
+		Quiz generatedQuiz = quizServ.generateQuiz(author, categoryId, size, difficulty);
+		return ResponseEntity.ok(generatedQuiz);
+	}
 
 	@DeleteMapping("/{quizId}")
 	public ResponseEntity<?> delete(@PathVariable String quizId) {
 		quizServ.deleteById(quizId);
 		return ResponseEntity.noContent().build();
 	}
-
+	
+	@GetMapping("/check")
+	public ResponseEntity<?> check(@RequestBody UserQuizAnswer userQuizAnswer) {
+			
+		QuizResult result = quizServ.getResult(userQuizAnswer);
+		return ResponseEntity.ok(result);
+	}
 }

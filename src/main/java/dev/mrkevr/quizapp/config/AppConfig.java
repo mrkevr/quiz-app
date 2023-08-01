@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.mrkevr.quizapp.api.service.QuestionService;
+import dev.mrkevr.quizapp.api.repository.QuestionMongoClientRepository;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -33,8 +33,11 @@ public class AppConfig {
 	}
 	
 //	@Bean
-	CommandLineRunner runner(QuestionService questionServ) {
+	CommandLineRunner runner(QuestionMongoClientRepository repo) {
 		return args -> {
+			
+			
+			
 			
 		};	
 	}

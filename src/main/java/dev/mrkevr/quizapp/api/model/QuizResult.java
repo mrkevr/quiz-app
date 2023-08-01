@@ -18,7 +18,7 @@ public class QuizResult {
 
 	int score;
 
-	int questionCount;
+	int items;
 
-	float scorePercentage;
+	String scorePercentage;
 }

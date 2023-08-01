@@ -70,7 +70,6 @@ public class QuestionController {
 
 	@PostMapping
 	ResponseEntity<QuestionResponse> save(@RequestBody QuestionRequest questionRequest) {
-
 		QuestionResponse savedQuestion = questionServ.add(questionRequest);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(savedQuestion.getQuestionId()).toUri();

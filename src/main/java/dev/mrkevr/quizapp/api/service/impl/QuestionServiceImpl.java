@@ -15,9 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.mrkevr.quizapp.api.dto.QuestionRequest;
 import dev.mrkevr.quizapp.api.dto.QuestionResponse;
+import dev.mrkevr.quizapp.api.exception.InvalidRequestException;
 import dev.mrkevr.quizapp.api.exception.ResourceNotFoundException;
 import dev.mrkevr.quizapp.api.mapper.QuestionMapper;
+import dev.mrkevr.quizapp.api.model.Category;
 import dev.mrkevr.quizapp.api.model.Question;
+import dev.mrkevr.quizapp.api.repository.CategoryRepository;
 import dev.mrkevr.quizapp.api.repository.QuestionMongoClientRepository;
 import dev.mrkevr.quizapp.api.repository.QuestionRepository;
 import dev.mrkevr.quizapp.api.service.QuestionService;
@@ -32,6 +35,7 @@ import lombok.experimental.FieldDefaults;
 public class QuestionServiceImpl implements QuestionService {
 
 	QuestionRepository questionRepo;
+	CategoryRepository categoryRepo;
 	QuestionMongoClientRepository QuestionMongoClientRepo;
 	QuestionMapper questionMapper;
 	Validator validator;
@@ -67,14 +71,18 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public QuestionResponse add(QuestionRequest questionRequest) {
 		
+		// validate
 		Set<ConstraintViolation<QuestionRequest>> violations = validator.validate(questionRequest);
-		
-		if(!questionRepo.existsById(questionRequest.getCategoryId())) {
-			
-		}
 		if (!violations.isEmpty()) {
-			 // throwing exception for the controller advice to handle
 			 throw new ConstraintViolationException("Error occurred.", violations);
+		}
+		// categoryId check
+		if(!categoryRepo.existsById(questionRequest.getCategoryId())) {
+			throw new ResourceNotFoundException(questionRequest.getCategoryId(), Category.class);
+		}
+		List<String> validAnswer = List.of("a", "b", "c", "d");
+		if(!validAnswer.contains(questionRequest.getRightAnswer().toLowerCase())) {
+			throw new InvalidRequestException("rightAnswer must be 'a', 'b', 'c' or 'd'");
 		}
 		
 		try {

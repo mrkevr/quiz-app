@@ -61,9 +61,26 @@ public class QuestionMongoClientRepositoryImpl implements QuestionMongoClientRep
 		return  database.getCollection("questions");
 	}
 	
+	// Not working, do not use yet
+	@Override
+	public List<String> findRandomQuestionId(String categoryId, int size) {
+		
+		MongoCollection<Document> collection = this.getCollection();
+		
+		AggregateIterable<Document> result = collection.aggregate(Arrays.asList(
+				new Document("$match", new Document("categoryId", categoryId)),
+				new Document("$sample", new Document("size", size)),
+				new Document("$unset", Arrays.asList("_class", "option", "question", "categoryId", "rightAnswer"))));
+		
+		List<String> questionIds = new ArrayList<>();
+		result.forEach(doc -> questionIds.add(mongoConverter.read(String.class, doc)));
+		return null;
+	}
+	
 	private List<Question> convert(AggregateIterable<Document> iterable){
 		List<Question> questions = new ArrayList<>();
 		iterable.forEach(doc -> questions.add(mongoConverter.read(Question.class, doc)));
 		return questions;
 	}
+
 }

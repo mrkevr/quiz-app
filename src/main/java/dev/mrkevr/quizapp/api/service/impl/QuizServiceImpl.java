@@ -1,13 +1,24 @@
 package dev.mrkevr.quizapp.api.service.impl;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import dev.mrkevr.quizapp.api.dto.UserQuizAnswer;
+import dev.mrkevr.quizapp.api.exception.InvalidRequestException;
 import dev.mrkevr.quizapp.api.exception.ResourceNotFoundException;
+import dev.mrkevr.quizapp.api.model.Category;
+import dev.mrkevr.quizapp.api.model.Difficulty;
+import dev.mrkevr.quizapp.api.model.Question;
 import dev.mrkevr.quizapp.api.model.Quiz;
 import dev.mrkevr.quizapp.api.model.QuizResult;
-import dev.mrkevr.quizapp.api.model.UserAnswer;
+import dev.mrkevr.quizapp.api.repository.CategoryRepository;
+import dev.mrkevr.quizapp.api.repository.QuestionMongoClientRepository;
+import dev.mrkevr.quizapp.api.repository.QuestionRepository;
 import dev.mrkevr.quizapp.api.repository.QuizRepository;
 import dev.mrkevr.quizapp.api.service.QuizService;
 import lombok.AccessLevel;
@@ -20,7 +31,10 @@ import lombok.experimental.FieldDefaults;
 public class QuizServiceImpl implements QuizService {
 
 	QuizRepository quizRepo;
-
+	CategoryRepository categoryRepo;
+	QuestionRepository questionRepo;
+	QuestionMongoClientRepository questionMongoClientRepo;
+	
 	@Override
 	public List<Quiz> getAll() {
 		return quizRepo.findAll();
@@ -35,7 +49,33 @@ public class QuizServiceImpl implements QuizService {
 	public Quiz save(Quiz quiz) {
 		return quizRepo.save(quiz);
 	}
-
+	
+	@Override
+	public Quiz generateQuiz(String author,String categoryId, int size, Difficulty difficulty) {
+		
+		if(size > 10 || size < 1) {
+			throw new InvalidRequestException("Quiz size must not be 1-10");
+		}
+		if(!categoryRepo.existsById(categoryId)) {
+			throw new ResourceNotFoundException(categoryId, Category.class);
+		}
+		
+		List<String> questionIds = questionMongoClientRepo.findRandom(categoryId, size).stream()
+			.map(q -> q.getQuestionId())
+			.collect(Collectors.toList());
+		
+		Quiz quiz = Quiz.builder()
+			.author(author)
+			.difficulty(difficulty)
+			.categoryId(categoryId)
+			.questionIds(questionIds.stream().collect(Collectors.toSet()))
+			.quizId(null)
+			.build();
+		
+		Quiz savedQuiz = quizRepo.save(quiz);
+		return savedQuiz;
+	}
+	
 	@Override
 	public Quiz updateById(String id, Quiz quiz) {
 		// TODO Auto-generated method stub
@@ -59,12 +99,51 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 	@Override
-	public QuizResult getResult(String quizId, List<UserAnswer> answers) {
+	public QuizResult getResult(UserQuizAnswer userQuizAnswer) {
 		
+		Quiz quiz = quizRepo.findById(userQuizAnswer.getQuizId())
+				.orElseThrow(() -> new ResourceNotFoundException(userQuizAnswer.getQuizId(), Quiz.class));
 		
+		List<String> quizQuestionIds = new ArrayList<String>();
+		quizQuestionIds.addAll(quiz.getQuestionIds());
+		List<String> userQuestionIds = userQuizAnswer.getUserAnswers().stream().map(e -> e.getQuestionId()).collect(Collectors.toList());
+		// match the ids from two lists
+		boolean isQuestionIdsMatch = this.idEqualIgnoreOrder(quizQuestionIds, userQuestionIds);
+		if(!isQuestionIdsMatch) {
+			throw new InvalidRequestException("User's question id's do not match with the quiz's.");
+		}
 		
+		// ====================== //
+		int[] scoreArray = { 0 };
 		
-		return null;
-	}
+		Iterable<Question> iterable = questionRepo.findAllById(quizQuestionIds);
+		iterable.forEach(question -> {
+			
+			boolean getScore = userQuizAnswer.getUserAnswers().stream()
+					.anyMatch(answer -> answer.getQuestionId().equals(question.getQuestionId()) && answer.getAnswer().equals(question.getRightAnswer()));
+			
+			// increment score if the answer is correct
+			if(getScore) {
+				scoreArray[0]++;
+			}
+		});
+		
+		double scorePercentage = (scoreArray[0] / (double)quiz.getQuestionIds().size()) * 100;
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String formattedPercentage = decimalFormat.format(scorePercentage)+"%";
 
+		return QuizResult.builder()
+				.quizId(userQuizAnswer.getQuizId())
+				.score(scoreArray[0])
+				.items(quiz.getQuestionIds().size())
+				.scorePercentage(formattedPercentage)
+				.build();
+	}
+	
+	
+	private boolean idEqualIgnoreOrder(List<String> list1, List<String> list2) {
+		Collections.sort(list1);
+		Collections.sort(list2);
+		return list1.equals(list2);
+	}
 }

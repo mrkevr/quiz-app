@@ -9,4 +9,6 @@ public interface QuestionMongoClientRepository {
 	List<Question> searchByKeyword(String keyword, String sort, long limit);
 
 	List<Question> findRandom(String categoryId, int size);
+	
+	List<String> findRandomQuestionId(String categoryId, int size);
 }
