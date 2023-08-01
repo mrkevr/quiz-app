@@ -1,4 +1,4 @@
-package dev.mrkevr.quizapp.api.model;
+package dev.mrkevr.quizapp.api.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import dev.mrkevr.quizapp.api.dto.QuestionRequest;
 import dev.mrkevr.quizapp.api.dto.QuestionResponse;
+import dev.mrkevr.quizapp.api.model.Question;
 
 @Component
 public class QuestionMapper {

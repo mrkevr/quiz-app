@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import dev.mrkevr.quizapp.api.exception.ResourceNotFoundException;
 import dev.mrkevr.quizapp.api.model.Quiz;
+import dev.mrkevr.quizapp.api.model.QuizResult;
+import dev.mrkevr.quizapp.api.model.UserAnswer;
 import dev.mrkevr.quizapp.api.repository.QuizRepository;
 import dev.mrkevr.quizapp.api.service.QuizService;
 import lombok.AccessLevel;
@@ -54,6 +56,15 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public List<Quiz> getAllByAuthor(String author) {
 		return quizRepo.findByAuthorIgnoreCase(author);
+	}
+
+	@Override
+	public QuizResult getResult(String quizId, List<UserAnswer> answers) {
+		
+		
+		
+		
+		return null;
 	}
 
 }
