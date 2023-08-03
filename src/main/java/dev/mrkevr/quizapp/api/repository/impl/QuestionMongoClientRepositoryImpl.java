@@ -46,7 +46,6 @@ public class QuestionMongoClientRepositoryImpl implements QuestionMongoClientRep
 	public List<Question> findRandom(String categoryId, int size) {
 
 		MongoCollection<Document> collection = this.getCollection();
-
 		AggregateIterable<Document> result;
 		
 		result = collection.aggregate(Arrays.asList(
@@ -54,11 +53,6 @@ public class QuestionMongoClientRepositoryImpl implements QuestionMongoClientRep
 				new Document("$sample", new Document("size", size))));
 
 		return this.convert(result);
-	}
-	
-	private MongoCollection<Document> getCollection(){
-		MongoDatabase database = mongoClient.getDatabase("quiz-app-db");
-		return  database.getCollection("questions");
 	}
 	
 	// Not working, do not use yet
@@ -75,6 +69,11 @@ public class QuestionMongoClientRepositoryImpl implements QuestionMongoClientRep
 		List<String> questionIds = new ArrayList<>();
 		result.forEach(doc -> questionIds.add(mongoConverter.read(String.class, doc)));
 		return null;
+	}
+	
+	private MongoCollection<Document> getCollection(){
+		MongoDatabase database = mongoClient.getDatabase("quiz-app-db");
+		return  database.getCollection("questions");
 	}
 	
 	private List<Question> convert(AggregateIterable<Document> iterable){

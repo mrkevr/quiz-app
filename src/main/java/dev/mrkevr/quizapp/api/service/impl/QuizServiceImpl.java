@@ -19,6 +19,7 @@ import dev.mrkevr.quizapp.api.model.QuizResult;
 import dev.mrkevr.quizapp.api.repository.CategoryRepository;
 import dev.mrkevr.quizapp.api.repository.QuestionMongoClientRepository;
 import dev.mrkevr.quizapp.api.repository.QuestionRepository;
+import dev.mrkevr.quizapp.api.repository.QuizMongoClientRepository;
 import dev.mrkevr.quizapp.api.repository.QuizRepository;
 import dev.mrkevr.quizapp.api.service.QuizService;
 import lombok.AccessLevel;
@@ -34,6 +35,7 @@ public class QuizServiceImpl implements QuizService {
 	CategoryRepository categoryRepo;
 	QuestionRepository questionRepo;
 	QuestionMongoClientRepository questionMongoClientRepo;
+	QuizMongoClientRepository quizMongoClientRepo;
 	
 	@Override
 	public List<Quiz> getAll() {
@@ -140,10 +142,18 @@ public class QuizServiceImpl implements QuizService {
 				.build();
 	}
 	
-	
 	private boolean idEqualIgnoreOrder(List<String> list1, List<String> list2) {
 		Collections.sort(list1);
 		Collections.sort(list2);
 		return list1.equals(list2);
+	}
+
+	@Override
+	public Quiz getRandom(String categoryId) {
+		if(!categoryRepo.existsById(categoryId)) {
+			throw new ResourceNotFoundException(categoryId, Category.class);
+		}
+		Quiz quiz = quizMongoClientRepo.getRandom(categoryId);
+		return quiz;
 	}
 }

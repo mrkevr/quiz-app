@@ -1,6 +1,7 @@
 package dev.mrkevr.quizapp.api.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import dev.mrkevr.quizapp.api.dto.QuestionRequest;
 import dev.mrkevr.quizapp.api.dto.QuestionResponse;
 import dev.mrkevr.quizapp.api.service.QuestionService;
+import dev.mrkevr.quizapp.api.service.QuizService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,6 +31,7 @@ import lombok.experimental.FieldDefaults;
 public class QuestionController {
 
 	QuestionService questionServ;
+	QuizService quizServ;
 	
 	@GetMapping("/{id}")
 	ResponseEntity<QuestionResponse> getById(@PathVariable String id) {
@@ -40,7 +43,7 @@ public class QuestionController {
 	ResponseEntity<List<QuestionResponse>> getAll(@RequestBody(required = false) List<String> questionIds,
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "20") int limit) {
-
+		
 		// Search for the question by given list of id
 		if (questionIds != null) {
 			List<QuestionResponse> questions = questionServ.getAllById(questionIds);
@@ -51,6 +54,14 @@ public class QuestionController {
 			List<QuestionResponse> questions = questionServ.getAll(pageRequest);
 			return ResponseEntity.ok(questions);
 		}
+	}
+	
+	@GetMapping("/quiz/{quizId}")
+	ResponseEntity<List<QuestionResponse>> getAllByQuizId(@PathVariable(required = true) String quizId) {
+		List<String> questionIds = new ArrayList<String>();
+		questionIds.addAll(quizServ.getById(quizId).getQuestionIds());
+		List<QuestionResponse> questions = questionServ.getAllById(questionIds);
+		return ResponseEntity.ok(questions);
 	}
 	
 	@GetMapping("/random")

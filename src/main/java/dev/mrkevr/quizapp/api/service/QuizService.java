@@ -16,7 +16,9 @@ public interface QuizService {
 	Quiz save(Quiz quiz);
 
 	Quiz generateQuiz(String author, String categoryId, int size, Difficulty difficulty);
-
+	
+	Quiz getRandom(String categoryId);
+	
 	Quiz updateById(String id, Quiz quiz);
 
 	void deleteById(String quizId);
