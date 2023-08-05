@@ -1,6 +1,7 @@
 package dev.mrkevr.quizapp.api.service.impl;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -131,14 +132,19 @@ public class QuizServiceImpl implements QuizService {
 		});
 		
 		double scorePercentage = (scoreArray[0] / (double)quiz.getQuestionIds().size()) * 100;
-		DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        String formattedPercentage = decimalFormat.format(scorePercentage)+"%";
+		BigDecimal bd = new BigDecimal(scorePercentage).setScale(2, RoundingMode.HALF_UP);  
+		double roundedPercentage = bd.doubleValue(); 
+		
+//		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+//        String formattedPercentage = decimalFormat.format(scorePercentage)+"%";
 
 		return QuizResult.builder()
+				.username(userQuizAnswer.getUsername())
+				.categoryId(userQuizAnswer.getCategoryId())
 				.quizId(userQuizAnswer.getQuizId())
 				.score(scoreArray[0])
 				.items(quiz.getQuestionIds().size())
-				.scorePercentage(formattedPercentage)
+				.percentage(roundedPercentage)
 				.build();
 	}
 	

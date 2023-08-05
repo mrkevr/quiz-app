@@ -13,12 +13,16 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuizResult {
-
+	
+	String username;
+	
+	String categoryId;
+	
 	String quizId;
 
 	int score;
 
 	int items;
 
-	String scorePercentage;
+	double percentage;
 }

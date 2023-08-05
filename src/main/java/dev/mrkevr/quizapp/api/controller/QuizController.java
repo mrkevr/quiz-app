@@ -86,7 +86,7 @@ public class QuizController {
 		return ResponseEntity.ok(quiz);
 	}
 	
-	@GetMapping("/check")
+	@PostMapping("/check")
 	public ResponseEntity<?> check(@RequestBody UserQuizAnswer userQuizAnswer) {
 			
 		QuizResult result = quizServ.getResult(userQuizAnswer);

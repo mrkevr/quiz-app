@@ -12,6 +12,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserQuizAnswer {
 	
+	String username;
+	String categoryId;
 	String quizId;
 	List<UserAnswer> userAnswers;
 }
