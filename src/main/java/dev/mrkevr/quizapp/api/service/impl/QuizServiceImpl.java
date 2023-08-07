@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import dev.mrkevr.quizapp.api.dto.QuizResult;
 import dev.mrkevr.quizapp.api.dto.UserQuizAnswer;
 import dev.mrkevr.quizapp.api.exception.InvalidRequestException;
 import dev.mrkevr.quizapp.api.exception.ResourceNotFoundException;
@@ -16,18 +18,20 @@ import dev.mrkevr.quizapp.api.model.Category;
 import dev.mrkevr.quizapp.api.model.Difficulty;
 import dev.mrkevr.quizapp.api.model.Question;
 import dev.mrkevr.quizapp.api.model.Quiz;
-import dev.mrkevr.quizapp.api.model.QuizResult;
+import dev.mrkevr.quizapp.api.model.Ranking;
 import dev.mrkevr.quizapp.api.repository.CategoryRepository;
 import dev.mrkevr.quizapp.api.repository.QuestionMongoClientRepository;
 import dev.mrkevr.quizapp.api.repository.QuestionRepository;
 import dev.mrkevr.quizapp.api.repository.QuizMongoClientRepository;
 import dev.mrkevr.quizapp.api.repository.QuizRepository;
 import dev.mrkevr.quizapp.api.service.QuizService;
+import dev.mrkevr.quizapp.api.service.RankingService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Service
+@Transactional(readOnly = true)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class QuizServiceImpl implements QuizService {
@@ -37,6 +41,7 @@ public class QuizServiceImpl implements QuizService {
 	QuestionRepository questionRepo;
 	QuestionMongoClientRepository questionMongoClientRepo;
 	QuizMongoClientRepository quizMongoClientRepo;
+	RankingService rankingServ;
 	
 	@Override
 	public List<Quiz> getAll() {
@@ -54,10 +59,11 @@ public class QuizServiceImpl implements QuizService {
 	}
 	
 	@Override
+	@Transactional
 	public Quiz generateQuiz(String author,String categoryId, int size, Difficulty difficulty) {
 		
-		if(size > 10 || size < 1) {
-			throw new InvalidRequestException("Quiz size must not be 1-10");
+		if(size > 15 || size < 5) {
+			throw new InvalidRequestException("Quiz size must not be 5-15");
 		}
 		if(!categoryRepo.existsById(categoryId)) {
 			throw new ResourceNotFoundException(categoryId, Category.class);
@@ -80,6 +86,7 @@ public class QuizServiceImpl implements QuizService {
 	}
 	
 	@Override
+	@Transactional
 	public Quiz updateById(String id, Quiz quiz) {
 		// TODO Auto-generated method stub
 		return null;
@@ -91,6 +98,7 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(String quizId) {
 		Quiz quiz = quizRepo.findById(quizId).orElseThrow(() -> new ResourceNotFoundException(quizId, Quiz.class));
 		quizRepo.delete(quiz);
@@ -102,6 +110,7 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 	@Override
+	@Transactional
 	public QuizResult getResult(UserQuizAnswer userQuizAnswer) {
 		
 		Quiz quiz = quizRepo.findById(userQuizAnswer.getQuizId())
@@ -110,10 +119,10 @@ public class QuizServiceImpl implements QuizService {
 		List<String> quizQuestionIds = new ArrayList<String>();
 		quizQuestionIds.addAll(quiz.getQuestionIds());
 		List<String> userQuestionIds = userQuizAnswer.getUserAnswers().stream().map(e -> e.getQuestionId()).collect(Collectors.toList());
-		// match the ids from two lists
+		// Match the ids from two lists
 		boolean isQuestionIdsMatch = this.idEqualIgnoreOrder(quizQuestionIds, userQuestionIds);
 		if(!isQuestionIdsMatch) {
-			throw new InvalidRequestException("User's question id's do not match with the quiz's.");
+			throw new InvalidRequestException("User's questionIds do not match with the Quiz' questionIds.");
 		}
 		
 		// ====================== //
@@ -135,10 +144,7 @@ public class QuizServiceImpl implements QuizService {
 		BigDecimal bd = new BigDecimal(scorePercentage).setScale(2, RoundingMode.HALF_UP);  
 		double roundedPercentage = bd.doubleValue(); 
 		
-//		DecimalFormat decimalFormat = new DecimalFormat("#.##");
-//        String formattedPercentage = decimalFormat.format(scorePercentage)+"%";
-
-		return QuizResult.builder()
+		 QuizResult quizResult = QuizResult.builder()
 				.username(userQuizAnswer.getUsername())
 				.categoryId(userQuizAnswer.getCategoryId())
 				.quizId(userQuizAnswer.getQuizId())
@@ -146,14 +152,14 @@ public class QuizServiceImpl implements QuizService {
 				.items(quiz.getQuestionIds().size())
 				.percentage(roundedPercentage)
 				.build();
+		
+		 // Update the ranking
+		 Ranking savedRanking = rankingServ.saveResult(quizResult);
+		 System.out.println(savedRanking);
+		 
+		return quizResult;
 	}
 	
-	private boolean idEqualIgnoreOrder(List<String> list1, List<String> list2) {
-		Collections.sort(list1);
-		Collections.sort(list2);
-		return list1.equals(list2);
-	}
-
 	@Override
 	public Quiz getRandom(String categoryId) {
 		if(!categoryRepo.existsById(categoryId)) {
@@ -161,5 +167,12 @@ public class QuizServiceImpl implements QuizService {
 		}
 		Quiz quiz = quizMongoClientRepo.getRandom(categoryId);
 		return quiz;
+	}
+	
+	// Helper method the determine if the collections of ids match
+	private boolean idEqualIgnoreOrder(List<String> list1, List<String> list2) {
+		Collections.sort(list1);
+		Collections.sort(list2);
+		return list1.equals(list2);
 	}
 }

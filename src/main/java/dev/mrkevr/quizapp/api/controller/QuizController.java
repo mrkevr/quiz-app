@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.mrkevr.quizapp.api.dto.QuizResult;
 import dev.mrkevr.quizapp.api.dto.UserQuizAnswer;
 import dev.mrkevr.quizapp.api.model.Difficulty;
 import dev.mrkevr.quizapp.api.model.Quiz;
-import dev.mrkevr.quizapp.api.model.QuizResult;
 import dev.mrkevr.quizapp.api.service.QuizService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

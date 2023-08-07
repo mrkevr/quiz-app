@@ -2,10 +2,10 @@ package dev.mrkevr.quizapp.api.service;
 
 import java.util.List;
 
+import dev.mrkevr.quizapp.api.dto.QuizResult;
 import dev.mrkevr.quizapp.api.dto.UserQuizAnswer;
 import dev.mrkevr.quizapp.api.model.Difficulty;
 import dev.mrkevr.quizapp.api.model.Quiz;
-import dev.mrkevr.quizapp.api.model.QuizResult;
 
 public interface QuizService {
 

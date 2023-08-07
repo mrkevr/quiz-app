@@ -1,4 +1,4 @@
-package dev.mrkevr.quizapp.api.model;
+package dev.mrkevr.quizapp.api.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
