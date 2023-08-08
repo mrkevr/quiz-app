@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.mrkevr.quizapp.api.dto.QuizResult;
+import dev.mrkevr.quizapp.api.dto.RankingResponse;
 import dev.mrkevr.quizapp.api.exception.ResourceNotFoundException;
+import dev.mrkevr.quizapp.api.mapper.RankingMapper;
 import dev.mrkevr.quizapp.api.model.Category;
 import dev.mrkevr.quizapp.api.model.Ranking;
 import dev.mrkevr.quizapp.api.repository.CategoryRepository;
@@ -28,6 +30,7 @@ public class RankingServiceImpl implements RankingService {
 
 	RankingRepository rankingRepo;
 	CategoryRepository categoryRepo;
+	RankingMapper rankingMapper;
 	
 	@Override
 	@Transactional
@@ -49,7 +52,8 @@ public class RankingServiceImpl implements RankingService {
 		}
 		
 		// Fetching the ranking by categoryId
-		Ranking ranking = this.getByCategoryId(quizResult.getCategoryId());
+		Ranking ranking = rankingRepo.findByCategoryId(quizResult.getCategoryId())
+				.orElseThrow(() -> new ResourceNotFoundException(quizResult.getCategoryId(), Category.class));
 		
 		// Adding the username and percentage to the map
 		ranking.getUsernamePercentage().put(quizResult.getUsername(), quizResult.getPercentage());
@@ -62,20 +66,22 @@ public class RankingServiceImpl implements RankingService {
 	}
 
 	@Override
-	public List<Ranking> getAll() {
-		return rankingRepo.findAll();
+	public List<RankingResponse> getAll() {
+		return rankingMapper.toResponse(rankingRepo.findAll());
 	}
 
 	@Override
-	public Ranking getById(String rankingID) {
-		return rankingRepo.findById(rankingID)
+	public RankingResponse getById(String rankingID) {
+		 Ranking ranking = rankingRepo.findById(rankingID)
 				.orElseThrow(() -> new ResourceNotFoundException(rankingID, Ranking.class));
+		return rankingMapper.toResponse(ranking);
 	}
 
 	@Override
-	public Ranking getByCategoryId(String categoryId) {
-		return rankingRepo.findByCategoryId(categoryId)
+	public RankingResponse getByCategoryId(String categoryId) {
+		Ranking ranking = rankingRepo.findByCategoryId(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException(categoryId, Category.class));
+		return rankingMapper.toResponse(ranking);
 	}
 	
 	// Helper method to update the ranking entries
@@ -95,7 +101,6 @@ public class RankingServiceImpl implements RankingService {
 	        // Remove entry with the least percentage
 	        usernamePercentage.entrySet()
 	        	.removeIf(entry -> entry.getValue().equals(lowestPercentageEntry.getValue()));
-	 
 		}
 	}
 	

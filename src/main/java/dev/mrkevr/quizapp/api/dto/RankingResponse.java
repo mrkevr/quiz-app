@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RankingResponse {
 	
-	String rankingId;
+	String categoryId;
 	
 	String categoryName;
 	

@@ -119,6 +119,7 @@ public class QuizServiceImpl implements QuizService {
 		List<String> quizQuestionIds = new ArrayList<String>();
 		quizQuestionIds.addAll(quiz.getQuestionIds());
 		List<String> userQuestionIds = userQuizAnswer.getUserAnswers().stream().map(e -> e.getQuestionId()).collect(Collectors.toList());
+		
 		// Match the ids from two lists
 		boolean isQuestionIdsMatch = this.idEqualIgnoreOrder(quizQuestionIds, userQuestionIds);
 		if(!isQuestionIdsMatch) {

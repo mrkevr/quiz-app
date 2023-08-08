@@ -3,15 +3,16 @@ package dev.mrkevr.quizapp.api.service;
 import java.util.List;
 
 import dev.mrkevr.quizapp.api.dto.QuizResult;
+import dev.mrkevr.quizapp.api.dto.RankingResponse;
 import dev.mrkevr.quizapp.api.model.Ranking;
 
 public interface RankingService {
 	
-	List<Ranking> getAll();
+	List<RankingResponse> getAll();
 	
-	Ranking getById(String rankingID);
+	RankingResponse getById(String rankingID);
 	
-	Ranking getByCategoryId(String categoryId);
+	RankingResponse getByCategoryId(String categoryId);
 	
 	Ranking saveResult(QuizResult quizResult);
 }
