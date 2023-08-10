@@ -145,6 +145,8 @@ public class QuizServiceImpl implements QuizService {
 		BigDecimal bd = new BigDecimal(scorePercentage).setScale(2, RoundingMode.HALF_UP);  
 		double roundedPercentage = bd.doubleValue(); 
 		
+		System.out.println("done processsing result");
+		
 		 QuizResult quizResult = QuizResult.builder()
 				.username(userQuizAnswer.getUsername())
 				.categoryId(userQuizAnswer.getCategoryId())
@@ -153,7 +155,9 @@ public class QuizServiceImpl implements QuizService {
 				.items(quiz.getQuestionIds().size())
 				.percentage(roundedPercentage)
 				.build();
-		
+		 
+		 System.out.println(quizResult);
+		 
 		 // Update the ranking
 		 Ranking savedRanking = rankingServ.saveResult(quizResult);
 		 System.out.println(savedRanking);
