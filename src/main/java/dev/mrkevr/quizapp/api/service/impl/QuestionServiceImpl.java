@@ -71,15 +71,18 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public QuestionResponse add(QuestionRequest questionRequest) {
 		
-		// validate
+		// annotation validations
 		Set<ConstraintViolation<QuestionRequest>> violations = validator.validate(questionRequest);
 		if (!violations.isEmpty()) {
 			 throw new ConstraintViolationException("Error occurred.", violations);
 		}
+		
 		// categoryId check
 		if(!categoryRepo.existsById(questionRequest.getCategoryId())) {
 			throw new ResourceNotFoundException(questionRequest.getCategoryId(), Category.class);
 		}
+		
+		// rightAnswer validation
 		List<String> validAnswer = List.of("a", "b", "c", "d");
 		if(!validAnswer.contains(questionRequest.getRightAnswer().toLowerCase())) {
 			throw new InvalidRequestException("rightAnswer must be 'a', 'b', 'c' or 'd'");
@@ -99,7 +102,7 @@ public class QuestionServiceImpl implements QuestionService {
 				.orElseThrow(() -> new ResourceNotFoundException(questionId , Question.class));
 		questionRepo.delete(question);
 	}
-
+	
 	@Override
 	@Transactional
 	public QuestionResponse update(String questionId, Question question) {

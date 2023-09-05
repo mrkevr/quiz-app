@@ -40,7 +40,8 @@ public class QuestionController {
 	}
 
 	@GetMapping
-	ResponseEntity<List<QuestionResponse>> getAll(@RequestBody(required = false) List<String> questionIds,
+	ResponseEntity<List<QuestionResponse>> getAll(
+			@RequestBody(required = false) List<String> questionIds,
 			@RequestParam(required = false, defaultValue = "0") int page,
 			@RequestParam(required = false, defaultValue = "20") int limit) {
 		
@@ -57,7 +58,9 @@ public class QuestionController {
 	}
 	
 	@GetMapping("/quiz/{quizId}")
-	ResponseEntity<List<QuestionResponse>> getAllByQuizId(@PathVariable(required = true) String quizId) {
+	ResponseEntity<List<QuestionResponse>> getAllByQuizId(
+			@PathVariable(required = true) String quizId) {
+		
 		List<String> questionIds = new ArrayList<String>();
 		questionIds.addAll(quizServ.getById(quizId).getQuestionIds());
 		List<QuestionResponse> questions = questionServ.getAllById(questionIds);
@@ -74,13 +77,17 @@ public class QuestionController {
 	}
 
 	@GetMapping("/category/{categoryId}")
-	ResponseEntity<List<QuestionResponse>> getAllByCategoryId(@PathVariable String categoryId) {
+	ResponseEntity<List<QuestionResponse>> getAllByCategoryId(
+			@PathVariable String categoryId) {
+		
 		List<QuestionResponse> questions = questionServ.getAllByCategoryId(categoryId);
 		return ResponseEntity.ok(questions);
 	}
 
 	@PostMapping
-	ResponseEntity<QuestionResponse> save(@RequestBody QuestionRequest questionRequest) {
+	ResponseEntity<QuestionResponse> save(
+			@RequestBody QuestionRequest questionRequest) {
+		
 		QuestionResponse savedQuestion = questionServ.add(questionRequest);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(savedQuestion.getQuestionId()).toUri();
@@ -88,7 +95,9 @@ public class QuestionController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteById(@PathVariable String id) {
+	public ResponseEntity<?> deleteById(
+			@PathVariable String id) {
+		
 		questionServ.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
@@ -98,6 +107,7 @@ public class QuestionController {
 			@RequestParam(name = "keyword", required = true) String keyword,
 			@RequestParam(name = "sort", required = false, defaultValue = "_id") String sort,
 			@RequestParam(name = "limit", required = false, defaultValue = "100") long limit) {
+		
 		List<QuestionResponse> customers = questionServ.search(keyword, sort, limit);
 		return ResponseEntity.ok(customers);
 	}
