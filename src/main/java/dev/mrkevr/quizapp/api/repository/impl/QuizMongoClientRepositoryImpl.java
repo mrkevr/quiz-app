@@ -50,5 +50,4 @@ public class QuizMongoClientRepositoryImpl implements QuizMongoClientRepository 
 		iterable.forEach(doc -> quizzes.add(mongoConverter.read(Quiz.class, doc)));
 		return quizzes;
 	}
-
 }

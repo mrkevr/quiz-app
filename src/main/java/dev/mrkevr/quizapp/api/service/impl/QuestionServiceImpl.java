@@ -71,22 +71,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	public QuestionResponse add(QuestionRequest questionRequest) {
 		
-		// annotation validations
-		Set<ConstraintViolation<QuestionRequest>> violations = validator.validate(questionRequest);
-		if (!violations.isEmpty()) {
-			 throw new ConstraintViolationException("Error occurred.", violations);
-		}
-		
-		// categoryId check
-		if(!categoryRepo.existsById(questionRequest.getCategoryId())) {
-			throw new ResourceNotFoundException(questionRequest.getCategoryId(), Category.class);
-		}
-		
-		// rightAnswer validation
-		List<String> validAnswer = List.of("a", "b", "c", "d");
-		if(!validAnswer.contains(questionRequest.getRightAnswer().toLowerCase())) {
-			throw new InvalidRequestException("rightAnswer must be 'a', 'b', 'c' or 'd'");
-		}
+		this.validateQuestionRequest(questionRequest);
 		
 		try {
 			Question savedQuestion = questionRepo.save(questionMapper.toQuestion(questionRequest));
@@ -97,6 +82,7 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(String questionId) {
 		Question question = questionRepo.findById(questionId)
 				.orElseThrow(() -> new ResourceNotFoundException(questionId , Question.class));
@@ -105,12 +91,23 @@ public class QuestionServiceImpl implements QuestionService {
 	
 	@Override
 	@Transactional
-	public QuestionResponse update(String questionId, Question question) {
+	public QuestionResponse update(String questionId, QuestionRequest questionRequest) {
 		Question questionToUpdate = questionRepo.findById(questionId)
 				.orElseThrow(() -> new ResourceNotFoundException(questionId,  Question.class));
 
-		// logic here
-		return null;
+		this.validateQuestionRequest(questionRequest);
+		
+		questionToUpdate.setCategoryId(questionRequest.getCategoryId());
+		questionToUpdate.setQuestion(questionRequest.getQuestion());
+		questionToUpdate.setOption(questionRequest.getOption());
+		questionToUpdate.setRightAnswer(questionRequest.getRightAnswer());
+		
+		try {
+			Question savedQuestion = questionRepo.save(questionMapper.toQuestion(questionRequest));
+			return questionMapper.toQuestionResponse(savedQuestion);
+		} catch (Exception e) {
+			throw new IllegalStateException(e.getMessage());
+		}
 	}
 
 	@Override
@@ -122,5 +119,22 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public List<QuestionResponse> getRandom(String categoryId, int size) {
 		return questionMapper.toQuestionResponse(QuestionMongoClientRepo.findRandom(categoryId, size));
-	}	
+	}
+	
+	private void validateQuestionRequest(QuestionRequest questionRequest) {
+		// annotation validations
+		Set<ConstraintViolation<QuestionRequest>> violations = validator.validate(questionRequest);
+		if (!violations.isEmpty()) {
+			 throw new ConstraintViolationException("Error occurred.", violations);
+		}
+		// categoryId check
+		if(!categoryRepo.existsById(questionRequest.getCategoryId())) {
+			throw new ResourceNotFoundException(questionRequest.getCategoryId(), Category.class);
+		}
+		// rightAnswer validation
+		List<String> validAnswer = List.of("a", "b", "c", "d");
+		if(!validAnswer.contains(questionRequest.getRightAnswer().toLowerCase())) {
+			throw new InvalidRequestException("rightAnswer must be 'a', 'b', 'c' or 'd'");
+		}
+	}
 }

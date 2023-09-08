@@ -18,7 +18,6 @@ import dev.mrkevr.quizapp.api.model.Category;
 import dev.mrkevr.quizapp.api.model.Difficulty;
 import dev.mrkevr.quizapp.api.model.Question;
 import dev.mrkevr.quizapp.api.model.Quiz;
-import dev.mrkevr.quizapp.api.model.Ranking;
 import dev.mrkevr.quizapp.api.repository.CategoryRepository;
 import dev.mrkevr.quizapp.api.repository.QuestionMongoClientRepository;
 import dev.mrkevr.quizapp.api.repository.QuestionRepository;
@@ -132,6 +131,9 @@ public class QuizServiceImpl implements QuizService {
 		Iterable<Question> iterable = questionRepo.findAllById(quizQuestionIds);
 		iterable.forEach(question -> {
 			
+			/*
+			 *  User gets a score for every match of questionId+answer of userAnswer and questionId+rightAnswer of question document
+			 */
 			boolean getScore = userQuizAnswer.getUserAnswers().stream()
 					.anyMatch(answer -> answer.getQuestionId().equals(question.getQuestionId()) && answer.getAnswer().equals(question.getRightAnswer()));
 			
@@ -141,13 +143,11 @@ public class QuizServiceImpl implements QuizService {
 			}
 		});
 		
-		double scorePercentage = (scoreArray[0] / (double)quiz.getQuestionIds().size()) * 100;
-		BigDecimal bd = new BigDecimal(scorePercentage).setScale(2, RoundingMode.HALF_UP);  
-		double roundedPercentage = bd.doubleValue(); 
+		double scorePercentage = (scoreArray[0] / (double) quiz.getQuestionIds().size()) * 100;
+		BigDecimal bd = new BigDecimal(scorePercentage).setScale(2, RoundingMode.HALF_UP);
+		double roundedPercentage = bd.doubleValue();
 		
-		System.out.println("done processsing result");
-		
-		 QuizResult quizResult = QuizResult.builder()
+		QuizResult quizResult = QuizResult.builder()
 				.username(userQuizAnswer.getUsername())
 				.categoryId(userQuizAnswer.getCategoryId())
 				.quizId(userQuizAnswer.getQuizId())
@@ -156,12 +156,9 @@ public class QuizServiceImpl implements QuizService {
 				.percentage(roundedPercentage)
 				.build();
 		 
-		 System.out.println(quizResult);
-		 
-		 // Update the ranking
-		 Ranking savedRanking = rankingServ.saveResult(quizResult);
-		 System.out.println(savedRanking);
-		 
+		// Update the ranking
+		rankingServ.saveResult(quizResult);
+		
 		return quizResult;
 	}
 	

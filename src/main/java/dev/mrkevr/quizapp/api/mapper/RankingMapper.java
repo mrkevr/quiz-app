@@ -30,5 +30,4 @@ public class RankingMapper {
 				.map(r -> this.toResponse(r))
 				.collect(Collectors.toList());
 	}
-	
 }

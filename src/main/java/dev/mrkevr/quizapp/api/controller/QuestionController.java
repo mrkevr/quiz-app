@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,6 +93,15 @@ public class QuestionController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(savedQuestion.getQuestionId()).toUri();
 		return ResponseEntity.created(uri).body(savedQuestion);
+	}
+	
+	@PutMapping("/{id}")
+	ResponseEntity<QuestionResponse> update(
+			@PathVariable String id,
+			@RequestBody QuestionRequest questionRequest) {
+		
+		QuestionResponse savedQuestion = questionServ.update(id, questionRequest);
+		return ResponseEntity.ok(savedQuestion);
 	}
 	
 	@DeleteMapping("/{id}")

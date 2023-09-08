@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 
 import dev.mrkevr.quizapp.api.dto.QuestionRequest;
 import dev.mrkevr.quizapp.api.dto.QuestionResponse;
-import dev.mrkevr.quizapp.api.model.Question;
 
 public interface QuestionService {
 	
@@ -18,7 +17,7 @@ public interface QuestionService {
 
 	void deleteById(String questionId);
 
-	QuestionResponse update(String questionId, Question question);
+	QuestionResponse update(String questionId, QuestionRequest questionRequest);
 
 	List<QuestionResponse> getAllById(List<String> questionIds);
 

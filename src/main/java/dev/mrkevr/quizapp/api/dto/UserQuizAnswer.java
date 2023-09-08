@@ -13,7 +13,10 @@ import lombok.experimental.FieldDefaults;
 public class UserQuizAnswer {
 	
 	String username;
+	
 	String categoryId;
+	
 	String quizId;
+	
 	List<UserAnswer> userAnswers;
 }

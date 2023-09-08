@@ -24,7 +24,7 @@ public class QuestionCommands {
 	
 	QuestionRepository questionRepo;
 	
-	@ShellMethod(value = "Get question by id", key = "question")
+	@ShellMethod(value = "View question by id", key = "question")
 	String question(@NotNull String id) {
 
 		Optional<Question> optional = questionRepo.findById(id);

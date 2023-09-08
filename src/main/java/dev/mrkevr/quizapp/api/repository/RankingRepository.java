@@ -9,5 +9,4 @@ import dev.mrkevr.quizapp.api.model.Ranking;
 public interface RankingRepository extends MongoRepository<Ranking, String> {
 	
 	Optional<Ranking> findByCategoryId(String categoryId);
-	
 }

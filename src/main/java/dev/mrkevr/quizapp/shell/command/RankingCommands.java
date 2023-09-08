@@ -30,13 +30,13 @@ public class RankingCommands {
 	RankingRepository rankingRepository;
 	DecimalFormat decimalFormat = new DecimalFormat("0.00");
 	
-	@ShellMethod(value = "Get ranking by category id", key = "ranking")
+	@ShellMethod(value = "View ranking by category id", key = "ranking")
 	String ranking(@NotNull String id) {
 
 		Optional<Ranking> optional = rankingRepository.findByCategoryId(id);
 
 		if (optional.isEmpty()) {
-			return "No ranking found with that category id";
+			return "No ranking found with that id";
 		} else {
 			Ranking ranking = optional.get();
 

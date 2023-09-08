@@ -29,7 +29,6 @@ public class QuestionMongoClientRepositoryImpl implements QuestionMongoClientRep
 	
 	@Override
 	public List<Question> searchByKeyword(String keyword, String sort, long limit) {
-		
 		MongoCollection<Document> collection = this.getCollection();
 		
 		AggregateIterable<Document> result = collection.aggregate(Arrays.asList(
@@ -44,7 +43,6 @@ public class QuestionMongoClientRepositoryImpl implements QuestionMongoClientRep
 
 	@Override
 	public List<Question> findRandom(String categoryId, int size) {
-
 		MongoCollection<Document> collection = this.getCollection();
 		AggregateIterable<Document> result;
 		
@@ -58,13 +56,12 @@ public class QuestionMongoClientRepositoryImpl implements QuestionMongoClientRep
 	// Not working, do not use yet
 	@Override
 	public List<String> findRandomQuestionId(String categoryId, int size) {
-		
 		MongoCollection<Document> collection = this.getCollection();
 		
 		AggregateIterable<Document> result = collection.aggregate(Arrays.asList(
 				new Document("$match", new Document("categoryId", categoryId)),
 				new Document("$sample", new Document("size", size)),
-				new Document("$unset", Arrays.asList("_class", "option", "question", "categoryId", "rightAnswer"))));
+				new Document("$unset", List.of("_class", "option", "question", "categoryId", "rightAnswer"))));
 		
 		List<String> questionIds = new ArrayList<>();
 		result.forEach(doc -> questionIds.add(mongoConverter.read(String.class, doc)));
@@ -76,10 +73,10 @@ public class QuestionMongoClientRepositoryImpl implements QuestionMongoClientRep
 		return  database.getCollection("questions");
 	}
 	
+	// Converts iterable to list
 	private List<Question> convert(AggregateIterable<Document> iterable){
 		List<Question> questions = new ArrayList<>();
 		iterable.forEach(doc -> questions.add(mongoConverter.read(Question.class, doc)));
 		return questions;
 	}
-
 }

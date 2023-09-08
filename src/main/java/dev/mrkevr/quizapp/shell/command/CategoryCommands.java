@@ -47,7 +47,7 @@ public class CategoryCommands {
 		return table.render(60);
 	}
 	
-	@ShellMethod(value = "Add new categories", key = "categories add")
+	@ShellMethod(value = "Add new category", key = "categories add")
 	String saveCategory(@NotNull String name) {
 		
 		Category category = new Category();

@@ -1,11 +1,9 @@
 package dev.mrkevr.quizapp.config;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.mrkevr.quizapp.api.repository.QuestionMongoClientRepository;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -14,7 +12,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
-public class AppConfig {
+public class SwaggerConfig {
 
 	@Bean
 	Docket api() {
@@ -30,15 +28,5 @@ public class AppConfig {
 	ApiInfo apiInfo() {
 		final ApiInfoBuilder builder = new ApiInfoBuilder();
 		return builder.build();
-	}
-	
-//	@Bean
-	CommandLineRunner runner(QuestionMongoClientRepository repo) {
-		return args -> {
-			
-			
-			
-			
-		};	
 	}
 }

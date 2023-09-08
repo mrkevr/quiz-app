@@ -16,10 +16,10 @@ import lombok.experimental.FieldDefaults;
 public class QuestionResponse {
 
 	String questionId;
-
+	
 	String categoryId;
-
+	
 	String question;
-
+	
 	Option option;
 }

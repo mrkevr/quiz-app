@@ -22,5 +22,4 @@ public class Category {
 	String categoryId;;
 
 	String name;
-	
 }

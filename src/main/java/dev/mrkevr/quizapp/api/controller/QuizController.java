@@ -55,9 +55,9 @@ public class QuizController {
 
 	@PostMapping
 	public ResponseEntity<Quiz> save(@RequestBody Quiz quiz) {
-
-		// validation logic here
-
+		/*
+		 *  TODO validation logic
+		 */
 		Quiz savedQuiz = quizServ.save(quiz);
 		return ResponseEntity.ok(savedQuiz);
 	}
@@ -88,7 +88,6 @@ public class QuizController {
 	
 	@PostMapping("/check")
 	public ResponseEntity<?> check(@RequestBody UserQuizAnswer userQuizAnswer) {
-			
 		QuizResult result = quizServ.getResult(userQuizAnswer);
 		return ResponseEntity.ok(result);
 	}

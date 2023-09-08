@@ -103,5 +103,4 @@ public class RankingServiceImpl implements RankingService {
 	        	.removeIf(entry -> entry.getValue().equals(lowestPercentageEntry.getValue()));
 		}
 	}
-	
 }
