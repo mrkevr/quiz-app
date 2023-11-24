@@ -1,4 +1,5 @@
 # QUIZ REST API
+![quiz_rest_api_thumbnail](https://github.com/mrkevr/quiz-app/assets/98044708/d95dd1f3-4010-4505-a3e6-8fb2e74f4035)
 This API allows you to manage your quizzes and questions. The API is built using Spring framework and uses MongoDB as its database.
 
 - [Introduction](#introduction)
