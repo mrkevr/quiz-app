@@ -30,21 +30,34 @@ Welcome to the Quiz App REST API, a robust and flexible solution for managing qu
 ```
 http://localhost:8085/swagger-ui.html
 ```
+[![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant)
+
+[![](https://img.shields.io/badge/POST-green?style=for-the-badge)](https://github.com/hamzamohdzubair/redant)
+
+[![](https://img.shields.io/badge/PUT-yellow?style=for-the-badge)](https://github.com/hamzamohdzubair/redant)
+
+[![](https://img.shields.io/badge/DELETE-red?style=for-the-badge)](https://github.com/hamzamohdzubair/redant)
+
 
 ## Endpoints
 ### Category
 | Method | URI | Description |
 | ------------- | ------------- | ------------- |
-| GET | `/api/categories` | Retrieve all categories |
-| POST | `/api/categories` | Create a new category |
-| GET | `/api/categories/{id}` | Retrieve a specific category by ID |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/categories` | Retrieve all categories |
+| [![](https://img.shields.io/badge/POST-green?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/categories` | Create a new category |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/categories/{id}` | Retrieve a specific category by ID |
 ### Question
-| Method | URI | Parameters | Description |
-| ------------- | ------------- | ------------- | ------------- |
-| GET | `/api/questions` | limit, page | Retrieve all categories |
-| GET | `/api/questions` | limit, page | Retrieve all categories |
-
-
+| Method | URI | Request Parameters | Request Body | Description |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions` | limit, page | - | Retrieve all questions |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/{id}` | - | - | Retrieve a specific question by ID |
+| [![](https://img.shields.io/badge/POST-green?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions` | - | JSON | Create a question |
+| [![](https://img.shields.io/badge/PUT-yellow?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/{id}` | - | JSON | Update an existing question by ID |
+| [![](https://img.shields.io/badge/DELETE-red?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/{id}` | - | JSON | Delete an existing question by ID |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/category/{categoryId}` | - | - | Retrieve all questions by Category ID |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/quiz/{quizId}` | - | - | Retrieve all questions by Quiz ID |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/random` | size, categoryId | - | Retrieve random questions by Category ID |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/search` | keyword, limit, sort | - | Search questions using request parameners |
 
 
 
