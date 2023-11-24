@@ -54,7 +54,7 @@ http://localhost:8085/swagger-ui.html
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/{id}` | - | - | Retrieve a specific question by ID |
 | [![](https://img.shields.io/badge/POST-green?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions` | - | JSON | Create a question |
 | [![](https://img.shields.io/badge/PUT-yellow?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/{id}` | - | JSON | Update an existing question by ID |
-| [![](https://img.shields.io/badge/DELETE-red?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/{id}` | - | JSON | Delete an existing question by ID |
+| [![](https://img.shields.io/badge/DELETE-red?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/{id}` | - | - | Delete an existing question by ID |
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/category/{categoryId}` | - | - | Retrieve all questions by Category ID |
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/quiz/{quizId}` | - | - | Retrieve all questions by Quiz ID |
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/random` | size, categoryId | - | Retrieve random questions by Category ID |
