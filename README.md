@@ -1,4 +1,4 @@
-# Qiuz REST API
+# QUIZ REST API
 This API allows you to manage your quizzes and questions. The API is built using Spring framework and uses MongoDB as its database.
 
 - [Introduction](#introduction)
@@ -32,4 +32,22 @@ http://localhost:8085/swagger-ui.html
 ```
 
 ## Endpoints
+### Category
+| Method | URI | Description |
+| ------------- | ------------- | ------------- |
+| GET | `/api/categories` | Retrieve all categories |
+| POST | `/api/categories` | Create a new category |
+| GET | `/api/categories/{id}` | Retrieve a specific category by ID |
+### Question
+| Method | URI | Parameters | Description |
+| ------------- | ------------- | ------------- | ------------- |
+| GET | `/api/questions` | limit, page | Retrieve all categories |
+| GET | `/api/questions` | limit, page | Retrieve all categories |
+
+
+
+
+
+
+
 
