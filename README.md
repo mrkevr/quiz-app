@@ -16,7 +16,7 @@ Welcome to the Quiz App REST API, a robust and flexible solution for managing qu
 | Categories | Endpoints for managing categories. Every question has a category based on their subject. |
 | Questions| Manages quesions. A question has three parts : question, the four choices and the correct answer. |
 | Quizzes| Endpoints that manages quizzes. A quiz is a set of questions that share a common category. |
-| Rankings| You can use these endpoints to view the ranking of each category. Rankings are automatically updated when a user submits their quiz. |
+| Rankings| You can use these endpoints to view the ranking of each category. Rankings are automatically updated when a user submits their solution to a quiz. |
 
 ## Dependencies
 | Dependency | |
