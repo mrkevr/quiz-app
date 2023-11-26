@@ -7,6 +7,7 @@ This API allows you to manage your quizzes and questions. The API is built using
 - [How To Run](#how-to-run)
 - [Swagger Documentation](#swagger-documentation)
 - [Endpoints](#endpoints)
+- Spring Shell Commands (CLI)
 
 ## Introduction
 Welcome to the Quiz App REST API, a robust and flexible solution for managing questions and quizzes built using Spring Boot. This project aims to provide a seamless and efficient platform for creating, storing, and retrieving quiz-related data through a RESTful API.
@@ -71,14 +72,14 @@ http://localhost:8085/swagger-ui.html
 
 ## Endpoints
 ### Category
-| Method | URI | Description |
+| Method | URI / Path Variables | Description |
 | ------------- | ------------- | ------------- |
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/categories` | Retrieve all categories |
 | [![](https://img.shields.io/badge/POST-green?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/categories` | Create a new category |
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/categories/{id}` | Retrieve a specific category by ID |
 
 ### Question
-| Method | URI | Request Parameters | Request Body | Description |
+| Method | URI / Path Variables | Request Parameters | Request Body | Description |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions` | limit, page | - | Retrieve all questions |
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/{id}` | - | - | Retrieve a specific question by ID |
@@ -91,7 +92,7 @@ http://localhost:8085/swagger-ui.html
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/search` | keyword, limit, sort | - | Search questions using request parameners |
 
 ### Quiz
-| Method | URI | Request Parameters | Request Body | Description |
+| Method | URI / Path Variables | Request Parameters | Request Body | Description |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/quizzes` | - | - | Retrieve all quizzes |
 | [![](https://img.shields.io/badge/POST-green?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/quizzes` | - | JSON | Create a quiz |
@@ -102,6 +103,13 @@ http://localhost:8085/swagger-ui.html
 | [![](https://img.shields.io/badge/POST-green?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/quizzes/generate` | author, categoryId, size | - | Generate a quiz by Category ID and item size |
 | [![](https://img.shields.io/badge/POST-green?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/quizzes/check` | - | JSON | Get the result and update the rankings |
 
+### Ranking
+| Method | URI / Path Variables | Request Parameters | Request Body | Description |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/rankings` | - | - | Retrieve all rankings |
+| [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/category{categoryId}` | - | - | Retrieve a specific ranking by Category ID |
+
+### Spring Shell Commands
 
 
 
