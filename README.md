@@ -7,7 +7,7 @@ This API allows you to manage your quizzes and questions. The API is built using
 - [How To Run](#how-to-run)
 - [Swagger Documentation](#swagger-documentation)
 - [Endpoints](#endpoints)
-- Spring Shell Commands (CLI)
+- [Spring Shell Commands](#spring-shell-commands)
 
 ## Introduction
 Welcome to the Quiz App REST API, a robust and flexible solution for managing questions and quizzes built using Spring Boot. This project aims to provide a seamless and efficient platform for creating, storing, and retrieving quiz-related data through a RESTful API.
@@ -110,10 +110,77 @@ http://localhost:8085/swagger-ui.html
 | [![](https://img.shields.io/badge/GET-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant) | `/api/questions/category{categoryId}` | - | - | Retrieve a specific ranking by Category ID |
 
 ### Spring Shell Commands
+I was learning Spring Shell so I practiced some commands :
 
+Category Commands
 
+`shell:>categories` - View all categories
 
+`shell:>categories add <category name>` - Add new category
+```
+shell:>categories
+┌───────────────────────────────────────┐
+│              Categories               │
+├────────────────────────┬──────────────┤
+│           ID           │Category Name │
+├────────────────────────┼──────────────┤
+│64c2350f7b226d7b9ac5be04│Java          │
+├────────────────────────┼──────────────┤
+│64c235157b226d7b9ac5be05│HTML          │
+├────────────────────────┼──────────────┤
+│64c235cc7b226d7b9ac5be08│Spring        │
+├────────────────────────┼──────────────┤
+│64d63b2c5d297b62515e1d95│Brooklyn 99   │
+├────────────────────────┼──────────────┤
+│64f5e249afd4ba50f7a75117│Peaky Blinders│
+└────────────────────────┴──────────────┘
+```
 
+Question Commands
+
+`shell:>question <id>` - View question by ID
+```
+shell:>question 64c3b89bf9a8ea22a4bd18dd
+┌──────────────────────────────────────────────────────────────────────────────┐
+│Which of the below is valid way to instantiate an array in java?              │
+├───────────────────────────────────────┬──────────────────────────────────────┤
+│(A) int myArray [] = {1, 3, 5};        │(B) int myArray [] [] = {1,2,3,4};    │
+├───────────────────────────────────────┼──────────────────────────────────────┤
+│(C) int [] myArray = (5, 4, 3);        │(D) int [] myArray = {“1”, “2”, “3”}; │
+└───────────────────────────────────────┴──────────────────────────────────────┘
+```
+
+Ranking Commands
+
+`shell:>ranking <id>` - View ranking by Category ID
+```
+shell:>ranking 64c235cc7b226d7b9ac5be08
+┌─────────────────────────────┐
+│       Spring Ranking        │
+├──────────────┬──────────────┤
+│   Username   │    Score     │
+├──────────────┼──────────────┤
+│mrkevr5       │        100.00│
+├──────────────┼──────────────┤
+│spring_stud10 │         86.67│
+├──────────────┼──────────────┤
+│mrkevr        │         60.00│
+├──────────────┼──────────────┤
+│spring_stud4  │         53.33│
+├──────────────┼──────────────┤
+│spring_stud6  │         46.67│
+├──────────────┼──────────────┤
+│spring_stud8  │         46.67│
+├──────────────┼──────────────┤
+│dwightschrute │         40.00│
+├──────────────┼──────────────┤
+│Jake Peralta  │         33.33│
+├──────────────┼──────────────┤
+│lanlan0555    │         33.33│
+├──────────────┼──────────────┤
+│kramreve@gmail│         33.33│
+└──────────────┴──────────────┘
+```
 
 
 
